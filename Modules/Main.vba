@@ -1,9 +1,9 @@
-' =======================================
+' ==========================================================
 ' Copyright(C) 2026 Shelley Sakuda
 ' MIT License
-' Repository
+' Repository    https://github.com/ssakuda/FindAndSortTable
 ' Contact       ssakuda+github@gmail.com
-' =======================================
+' ==========================================================
 
 Option Explicit
 
