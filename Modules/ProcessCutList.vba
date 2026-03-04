@@ -1,3 +1,5 @@
+Option Explicit
+
 Function CreateCutList(swView As View, insertConfig As InsertSettings) As WeldmentCutListAnnotation
     Dim config As String
 
@@ -12,12 +14,11 @@ Function CreateCutList(swView As View, insertConfig As InsertSettings) As Weldme
 End Function
 
 Function SortCutList(swWclAnnotation As WeldmentCutListAnnotation, sortConfig As SortSettings) As Boolean
-    SortCutList = swWclAnnotation.Sort(sortConfig.CutListColumnToSort, True)
+    SortCutList = swWclAnnotation.Sort(sortConfig.WclColumnToSort, True)
 End Function
 
 Private Function GetWeldConfig(currentConfig As String) As String
     Dim pos As Integer
-    
     
     'Config name could have <As Machined> and should be changed to <As Welded>
     pos = InStr(currentConfig, "<")

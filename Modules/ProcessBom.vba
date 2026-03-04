@@ -47,8 +47,7 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
     Dim colPartNoIndex As Integer
     Dim colSortIndex As Integer
     Dim rowCount As Integer
-    Dim i As Integer
-    Dim response As Boolean
+    Dim isSorted As Boolean
     Dim isDeleted As Boolean
 
     'BOM Order
@@ -61,13 +60,13 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
     'Adds a sort column to the BOM
     'Against standard VBA convention, 0 is false, 1 is true here
     'So we will run type coercion on this function
-    response = (swBomTableAnno.InsertColumn2( _
+    isSorted = (swBomTableAnno.InsertColumn2( _
                    swTableItemInsertPosition_After, _
                    colSortIndex - 1, _
                    "Priority", _
                    swInsertColumn_SingleLineTight) <> 0)
     
-    If Not response Then
+    If Not isSorted Then
         MsgBox "An error occured with inserting sort column.", vbCritical
         SortBomCustom = False
         Exit Function
@@ -76,6 +75,7 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
     'Assign a priority value to every row based on its part number
     rowCount = swBomTableAnno.rowCount - 1
 
+    Dim i As Integer
     For i = 1 To rowCount
         Dim partNo As String
 
@@ -87,7 +87,6 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
         Else
             swBomTableAnno.Text2(i, colSortIndex, False) = 1
         End If
-
     Next i
 
     'Overrides default sort configuration

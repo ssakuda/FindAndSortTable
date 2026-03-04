@@ -10,10 +10,8 @@ Option Explicit
 Sub FindAndSortTable()
     Dim swApp As SldWorks.SldWorks
     Dim swModel As ModelDoc2
-    Dim swView As View
     Dim swCurrentTableAnno As TableAnnotation
-    Dim sortConfig As SortSettings
-    Dim config As String
+    Dim sortConfig As New SortSettings
     Dim response As Boolean
 
     Set swApp = Application.SldWorks
@@ -40,8 +38,8 @@ Sub FindAndSortTable()
     End If
 
     'If a BOM or cut list is found, sorts it
-    Set sortConfig = ConfigureSortSettings(swCurrentTableAnno)
-    response = SortTable(swCurrentTableAnno, sortConfig)
+    Call sortConfig.ConfigureSortSettings(swCurrentTableAnno)
+    response = sortConfig.SortTable()
 
     If Not response Then
         MsgBox "Unable to sort table."
@@ -51,10 +49,10 @@ End Sub
 Sub InsertSortedTable()
     Dim swApp As SldWorks.SldWorks
     Dim swModel As ModelDoc2
-    Dim swCurrentTableAnno As TableAnnotation
     Dim swView As View
-    Dim sortConfig As SortSettings
-    Dim insertConfig As InsertSettings
+    Dim swCurrentTableAnno As TableAnnotation
+    Dim insertConfig As New InsertSettings
+    Dim sortConfig As New SortSettings
     Dim response As Boolean
 
     Set swApp = Application.SldWorks
@@ -71,7 +69,7 @@ Sub InsertSortedTable()
         MsgBox "Drawing is not checked out.  Make sure to check out file to save changes."
     End If
 
-    'Searches for a view to use for a BOM or cutlist
+    'Searches for a view to use for a BOM or cut list
     Set swView = GetTableView(swModel)
     
     If swView Is Nothing Then
@@ -80,71 +78,19 @@ Sub InsertSortedTable()
     End If
     
     'Gets location of default templates for fallback
-    Set insertConfig = ConfigureInsertSettings(swView, swApp)
-    Set swCurrentTableAnno = InsertTable(swView, insertConfig)
+    Call insertConfig.ConfigureInsertSettings(swView, swApp)
+    Set swCurrentTableAnno = insertConfig.InsertTable()
     
     If swCurrentTableAnno Is Nothing Then
         MsgBox "Unable to insert table.", vbCritical
         Exit Sub
     End If
 
-    'Sorts inserted BOM or cutlist
-    Set sortConfig = ConfigureSortSettings(swCurrentTableAnno)
-    response = SortTable(swCurrentTableAnno, sortConfig)
+    'Sorts inserted BOM or cut list
+    Call sortConfig.ConfigureSortSettings(swCurrentTableAnno)
+    response = sortConfig.SortTable()
 
     If Not response Then
         MsgBox "Unable to sort table."
     End If
 End Sub
-
-Public Function InsertTable(swView As View, insertConfig As InsertSettings) As TableAnnotation
-    Dim swTableDoc As ModelDoc2
-
-    Set swTableDoc = swView.ReferencedDocument
-
-    Select Case swTableDoc.GetType
-        Case swDocumentTypes_e.swDocASSEMBLY
-            Set InsertTable = CreateAsmBom(swView, insertConfig)
-        Case swDocumentTypes_e.swDocPART
-            'Checks if part has a weldment and inserts BOM or cutlist accordingly
-            If swTableDoc.IsWeldment Then
-                Set InsertTable = CreateCutList(swView, insertConfig)
-            Else
-                'Creates a BOM but pops up a warning.
-                MsgBox "Part is not a weldment. Check to see if it needs a BOM table."
-               
-                'No sort applied as it's a single item
-                Set InsertTable = CreatePartBom(swView, insertConfig)
-            End If
-        Case Else
-            Set InsertTable = Nothing
-    End Select
-End Function
-
-Private Function SortTable(swCurrentTableAnno As TableAnnotation, sortConfig As SortSettings) As Boolean
-    Dim swBomSortOptions As BomTableSortData
-    
-    Select Case swCurrentTableAnno.Type
-        Case swTableAnnotation_BillOfMaterials
-            Set swBomSortOptions = swCurrentTableAnno.GetBomTableSortData
-            Call ConfigureBomSort(swBomSortOptions, sortConfig)
-            
-            'Applies custom sort as necessary
-            If sortConfig.UseCustomSort Then
-                SortTable = SortBomCustom(swCurrentTableAnno, sortConfig)
-                Exit Function
-            End If
-            
-            SortTable = SortBom(swCurrentTableAnno, sortConfig)
-        Case swTableAnnotation_WeldmentCutList
-            'Applies custom sort as necessary
-            If sortConfig.UseCustomSort Then
-                SortTable = SortCutListCustom(swCurrentTableAnno, sortConfig)
-                Exit Function
-            End If
-
-            SortTable = SortCutList(swCurrentTableAnno, sortConfig)
-        Case Else
-            SortTable = False
-    End Select
-End Function
