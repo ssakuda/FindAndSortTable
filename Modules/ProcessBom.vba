@@ -54,7 +54,7 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
     'Priority 1: Manufactured part numbers - begins with a letter
     'Priority 2: Stock purchased part numbers - begins with a number
 
-    colPartNoIndex = 1
+    colPartNoIndex = sortBomCol1
     colSortIndex = swBomTableAnno.ColumnCount
 
     'Adds a sort column to the BOM
@@ -91,14 +91,14 @@ Function SortBomCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSett
 
     'Overrides default sort configuration
     'Sort BOM by priority value, Then part number
-    Set swSortData = swBomTableAnno.GetBomTableSortData
+    Set swSortData = swBomTableAnno.GetBomTableSortData()
 
     swSortData.Ascending(0) = True
     swSortData.ColumnIndex(0) = colSortIndex
     swSortData.Ascending(1) = True
     swSortData.ColumnIndex(1) = colPartNoIndex
     swSortData.Ascending(2) = True
-    swSortData.ColumnIndex(2) = -1
+    swSortData.ColumnIndex(2) = -1  'Unused sort option
     swSortData.DoNotChangeItemNumber = False
     swSortData.ItemGroups = swBomTableSortItemGroup_None
     swSortData.SaveCurrentSortParameters = True

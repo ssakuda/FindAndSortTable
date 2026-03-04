@@ -34,7 +34,7 @@ Private Function GetWeldConfig(currentConfig As String) As String
 End Function
 
 Function SortCutListCustom(swBomTableAnno As TableAnnotation, sortConfig As SortSettings) As Boolean
-    SortWclCustom = False
+    SortCutListCustom = False
 
-    MsgBox "No sort rules have been added."
+    MsgBox "No custom sort rules have been added."
 End Function

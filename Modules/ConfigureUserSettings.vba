@@ -25,7 +25,7 @@ Public Const wclAnchorPos As Integer = swBOMConfigurationAnchorType_e.swBOMConfi
 ' ----------------------------
 'If you need custom sort rules, set to true
 'Use SortBomCustom and SortCutlistCustom to write custom rules
-Public Const useCustomBomSort As Boolean = True
+Public Const useCustomBomSort As Boolean = False
 Public Const useCustomWclSort As Boolean = False
 
 'Set up to three columns to sort a BOM
