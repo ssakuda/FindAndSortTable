@@ -124,13 +124,13 @@ Private Function GetDefaultTemplatePath(tableType As swTableAnnotationType_e, sw
         Case swTableAnnotationType_e.swTableAnnotation_BillOfMaterials
             MsgBox "User-provided BOM template not found. A basic template will be applied."
     
-            UpdateTemplatePath = defaultTemplateFolder & "bom-standard.sldbomtbt"
+            GetDefaultTemplatePath = defaultTemplateFolder & "bom-standard.sldbomtbt"
         Case swTableAnnotationType_e.swTableAnnotation_WeldmentCutList
             MsgBox "User-provided cut list template not found. A basic template will be applied."
     
-            UpdateTemplatePath = defaultTemplateFolder & "cut list.sldwldtbt"
+            GetDefaultTemplatePath = defaultTemplateFolder & "cut list.sldwldtbt"
         Case Else
-            UpdateTemplatePath = ""
+            GetDefaultTemplatePath = ""
         End Select
 End Function
 
