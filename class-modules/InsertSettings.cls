@@ -117,6 +117,7 @@ Private Function GetDefaultTemplatePath(tableType As swTableAnnotationType_e, sw
     defaultLang = swApp.GetCurrentLanguage()
     defaultDataFolder = swApp.GetDataFolder(True)
     defaultTemplateFolder = Left(defaultDataFolder, InStr(1, defaultDataFolder, "\data")) & _
+                                "lang\" & _
                                 defaultLang & "\"
 
     Select Case tableType
