@@ -23,19 +23,19 @@ Public Sub ConfigureSortSettings(swTableAnno As TableAnnotation)
 
     Select Case swTableAnno.Type
         Case swTableAnnotationType_e.swTableAnnotation_BillOfMaterials
-            Me.UseCustomSort = useCustomBomSort
+            Me.UseCustomSort = USE_CUSTOM_BOM_SORT
 
             Call SetBomOrder(swTableAnno)
         Case swTableAnnotationType_e.swTableAnnotation_WeldmentCutList
-            Me.UseCustomSort = useCustomWclSort
+            Me.UseCustomSort = USE_CUSTOM_WCL_SORT
 
-            If sortWclCol < 0 Or sortWclCol >= swTableAnno.ColumnCount Then
+            If SORT_WCL_COL < 0 Or SORT_WCL_COL >= swTableAnno.ColumnCount Then
                 MsgBox "User-provided sort column does not exist. Default will be set."
 
                 Me.WclColumnToSort = 1
             End If
 
-            Me.WclColumnToSort = sortWclCol
+            Me.WclColumnToSort = SORT_WCL_COL
         Case Else
             MsgBox "Table type not recognized."
     End Select
@@ -73,9 +73,9 @@ Public Sub SetBomOrder(swTableAnno As TableAnnotation)
     Dim msgArr(0 To 2) As String
     Dim useMessage As Boolean
 
-    orderArr(0) = CInt(sortBomCol1)
-    orderArr(1) = CInt(sortBomCol2)
-    orderArr(2) = CInt(sortBomCol3)
+    orderArr(0) = CInt(SORT_BOM_COL_1)
+    orderArr(1) = CInt(SORT_BOM_COL_2)
+    orderArr(2) = CInt(SORT_BOM_COL_3)
 
     'Default array to deal with issues
     defaultArr(0) = 1

@@ -38,7 +38,7 @@ Function SortBom(swBomAnno As BomTableAnnotation, sortConfig As SortSettings) As
     Dim swBomSortOptions As BomTableSortData
 
     Set swBomSortOptions = swBomAnno.GetBomTableSortData()
-    Call ConfigureBomSort(swBomSortOptions, sortConfig)
+    Call sortConfig.ConfigureBomSort(swBomSortOptions)
     SortBom = swBomAnno.Sort(swBomSortOptions)
 End Function
 

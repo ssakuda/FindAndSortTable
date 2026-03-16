@@ -27,24 +27,24 @@ Public Sub ConfigureInsertSettings(swView As View, swApp As SldWorks.SldWorks)
     'If this fails, SolidWorks will still insert a table, but it will be barebones.
     Select Case swTableDoc.GetType
         Case swDocumentTypes_e.swDocASSEMBLY
-            Me.AnchorType = bomAnchorPos
+            Me.AnchorType = BOM_ANCHOR_POS
             Call Me.SetTemplatePath( _
-                    bomTemplatePath, _
+                    BOM_TEMPLATE_PATH, _
                     swTableAnnotationType_e.swTableAnnotation_BillOfMaterials, _
                     swApp)
         Case swDocumentTypes_e.swDocPART
             If swTableDoc.IsWeldment Then
-                Me.AnchorType = wclAnchorPos
+                Me.AnchorType = WCL_ANCHOR_POS
                 Call Me.SetTemplatePath( _
-                    wclTemplatePath, _
+                    WCL_TEMPLATE_PATH, _
                     swTableAnnotationType_e.swTableAnnotation_WeldmentCutList, _
                     swApp)
                 Exit Sub
             End If
                 
-                Me.AnchorType = bomAnchorPos
+                Me.AnchorType = BOM_ANCHOR_POS
                 Call Me.SetTemplatePath( _
-                        bomTemplatePath, _
+                        BOM_TEMPLATE_PATH, _
                         swTableAnnotationType_e.swTableAnnotation_BillOfMaterials, _
                         swApp)
         Case Else
